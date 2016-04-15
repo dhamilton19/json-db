@@ -16,7 +16,7 @@ export default class Db {
 
 	static init({directory, fileName}) {
 		this.initialised = true;
-		if(!directory) throw new Error('Missing directory.');
+		if (!directory) throw new Error('Missing directory.');
 
 		this.directory = directory + '\\';
 		this.fileName = fileName ? fileName : 'data.json';
@@ -31,7 +31,7 @@ export default class Db {
 		try {
 			this.entries = JSON.parse(fs.readFileSync(this.directory + this.fileName, 'utf-8'));
 		}
-		catch(e){ /* swallow error */ }
+		catch (e) { /* swallow error */ }
 	}
 
 	static addToQueue(item) {
@@ -58,7 +58,12 @@ export default class Db {
 		});
 	}
 
+	static getAll(callback) {
+        this.checkInitialised();
+		callback({[this.fileName]: this.entries});
+	}
+
 	static checkInitialised() {
-		if(!this.initialised) throw new Error('Must initialise static class.');
+		if (!this.initialised) throw new Error('Must initialise static class.');
 	}
 }
