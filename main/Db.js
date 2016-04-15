@@ -6,6 +6,7 @@ export default class Db {
 	static entries = {};
 	static directory = '';
 	static fileName = '';
+	static fileExtension = '.json';
 	static queue = {};
 	static writingPromise = null;
 	static initialised = false;
@@ -19,7 +20,7 @@ export default class Db {
 		if (!directory) throw new Error('Missing directory.');
 
 		this.directory = directory + '\\';
-		this.fileName = fileName ? fileName : 'data.json';
+		this.fileName = fileName ? fileName : 'data';
 		this.writingPromise = new Promise(resolve => {
 			resolve();
 		});
@@ -29,9 +30,10 @@ export default class Db {
 	static read() {
 		this.checkInitialised();
 		try {
-			this.entries = JSON.parse(fs.readFileSync(this.directory + this.fileName, 'utf-8'));
+			this.entries = JSON.parse(fs.readFileSync(this.directory + this.fileName + this.fileExtension, 'utf-8'));
 		}
-		catch (e) { /* swallow error */ }
+		catch (e) { /* swallow error */
+		}
 	}
 
 	static addToQueue(item) {
@@ -52,14 +54,14 @@ export default class Db {
 	static write() {
 		this.checkInitialised();
 		return new Promise((resolve) => {
-			fs.writeFile(this.directory + this.fileName, JSON.stringify(this.entries), 'utf-8', () => {
+			fs.writeFile(this.directory + this.fileName + this.fileExtension, JSON.stringify(this.entries), 'utf-8', () => {
 				resolve();
 			});
 		});
 	}
 
 	static getAll(callback) {
-        this.checkInitialised();
+		this.checkInitialised();
 		callback({[this.fileName]: this.entries});
 	}
 
