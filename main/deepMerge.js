@@ -23,7 +23,13 @@ export default function deepMerge(target, src) {
 			dest = Object.assign({}, target);
 		}
 		Object.keys(src).forEach(function (key) {
-			if (!target[key]) {
+			if(Array.isArray(target[key]) && Array.isArray(src[key])){
+				dest[key] = deepMerge(target[key], src[key]);
+			}
+			else if (typeof src[key] !== 'object' || !src[key]) {
+				dest[key] = src[key];
+			}
+			else if (!target[key]) {
 				dest[key] = src[key];
 			}
 			else {
