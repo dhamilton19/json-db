@@ -20,15 +20,10 @@ export default function deepMerge(target, src) {
 	}
 	else {
 		if (target && typeof target === 'object') {
-			Object.keys(target).forEach(function (key) {
-				dest[key] = target[key];
-			});
+			dest = Object.assign({}, target);
 		}
 		Object.keys(src).forEach(function (key) {
-			if (typeof src[key] !== 'object' || !src[key]) {
-				dest[key] = src[key];
-			}
-			else if (!target[key]) {
+			if (!target[key]) {
 				dest[key] = src[key];
 			}
 			else {
