@@ -1,4 +1,5 @@
 import fs from 'fs';
+import deepMerge from './deepMerge';
 
 
 export default class Db {
@@ -32,8 +33,7 @@ export default class Db {
 		try {
 			this.entries = JSON.parse(fs.readFileSync(this.directory + this.fileName + this.fileExtension, 'utf-8'));
 		}
-		catch (e) { /* swallow error */
-		}
+		catch (e) { /* swallow error */}
 	}
 
 	static addToQueue(item) {
@@ -46,9 +46,13 @@ export default class Db {
 
 	static handleQueue() {
 		this.checkInitialised();
-		this.entries = {...this.entries, ...this.queue};
+		this.merge();
 		this.queue = {};
 		this.writingPromise = this.write();
+	}
+
+	static merge(){
+		this.entries = deepMerge(this.entries, this.queue);
 	}
 
 	static write() {
