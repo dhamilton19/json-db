@@ -51,10 +51,6 @@ export default class Db {
 		this.writingPromise = this.write();
 	}
 
-	static merge(){
-		this.entries = deepMerge(this.entries, this.queue);
-	}
-
 	static write() {
 		this.checkInitialised();
 		return new Promise((resolve) => {
