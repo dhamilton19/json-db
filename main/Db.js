@@ -1,5 +1,5 @@
 import fs from 'fs';
-import deepMerge from './deepMerge';
+import merge from 'lodash/merge';
 
 
 export default class Db {
@@ -38,7 +38,7 @@ export default class Db {
 
 	static addToQueue(item) {
 		this.checkInitialised();
-		this.queue = deepMerge(this.queue, item);
+		this.queue = merge(this.queue, item);
 		this.writingPromise.then(() => {
 			this.handleQueue();
 		});
@@ -46,7 +46,7 @@ export default class Db {
 
 	static handleQueue() {
 		this.checkInitialised();
-		this.entries = deepMerge(this.entries, this.queue);
+		this.entries = merge(this.entries, this.queue);
 		this.queue = {};
 		this.writingPromise = this.write();
 	}
