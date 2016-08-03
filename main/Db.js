@@ -38,7 +38,7 @@ export default class Db {
 
 	static addToQueue(item) {
 		this.checkInitialised();
-		this.queue = {...this.queue, ...item};
+		this.queue = deepMerge(this.queue, item);
 		this.writingPromise.then(() => {
 			this.handleQueue();
 		});
@@ -46,7 +46,7 @@ export default class Db {
 
 	static handleQueue() {
 		this.checkInitialised();
-		this.merge();
+		this.entries = deepMerge(this.entries, this.queue);
 		this.queue = {};
 		this.writingPromise = this.write();
 	}
