@@ -7,6 +7,8 @@ This project was created specifically for the project below as Firebase was bloc
 
 See example of use at: https://github.com/dhamilton91/react-menu-app
 
+Further example at: https://github.com/dhamilton91/js-speed-test
+
 
 ##options
 `directory` [string] location to save json database.
